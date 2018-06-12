@@ -9,6 +9,8 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -35,6 +37,14 @@ public class Sql2oArtistDaoTest {
     public void addingArtistSetsId() {
         Artist testArtist = setupArtist();
         assertEquals(1, testArtist.getId());
+    }
+
+    @Test
+    public void addingSetsNameAndYearStarted() {
+        Artist testArtist = setupArtist();
+        Artist addedArtist = artistDao.findById(1);
+        assertEquals("Blink-182", addedArtist.getName());
+        assertEquals(1999, addedArtist.getYearStarted());
     }
 
     @Test
@@ -98,6 +108,28 @@ public class Sql2oArtistDaoTest {
         assertEquals(0, artistDao.getAllGenresByArtistId(testArtist.getId()).size());
     }
 
+    @Test
+    public void updateArtist_correctlyUpdatesArtist() {
+        Artist testArtist = setupArtist();
+        HashMap<String, Object> testMap = new HashMap<>();
+        testMap.put("name", "Blink-183");
+        testMap.put("yearStarted", 1998);
+        artistDao.update(1, testMap);
+        Artist updatedArtist = artistDao.findById(testArtist.getId());
+        assertEquals("Blink-183", updatedArtist.getName());
+        assertEquals(1998, updatedArtist.getYearStarted());
+    }
+
+    @Test
+    public void updateArtist_onlyUpdatesFieldsInHashMap() {
+        Artist testArtist = setupArtist();
+        HashMap<String, Object> testMap = new HashMap<>();
+        testMap.put("name", "Blink-183");
+        artistDao.update(1, testMap);
+        Artist updatedArtist = artistDao.findById(testArtist.getId());
+        assertEquals("Blink-183", updatedArtist.getName());
+        assertEquals(1999, updatedArtist.getYearStarted());
+    }
 
     public Artist setupArtist(){
         Artist artist = new Artist("Blink-182", 1999);

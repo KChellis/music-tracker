@@ -114,6 +114,16 @@ public class App {
             }
         });
 
+        post("/artists/:artistId/update", "application/json", (req, res) -> {
+            System.out.println("I'm here");
+            HashMap<String, Object> updatedContent = gson.fromJson(req.body(), HashMap.class);
+            System.out.println("I'm there");
+            int artistId = Integer.parseInt(req.params("artistId"));
+            artistDao.update(artistId, updatedContent);
+            res.status(201);
+            return gson.toJson(artistDao.findById(artistId));
+        });
+
         exception(ApiException.class, (exception, req, res) -> {
             ApiException err = (ApiException) exception;
             Map<String, Object> jsonMap = new HashMap<>();

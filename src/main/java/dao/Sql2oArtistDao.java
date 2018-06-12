@@ -7,6 +7,7 @@ import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Sql2oArtistDao implements ArtistDao {
@@ -112,5 +113,20 @@ public class Sql2oArtistDao implements ArtistDao {
             System.out.println(ex);
         }
         return genres;
+    }
+
+    @Override
+    public void update(int id, HashMap<String, Object> updatedContent) {
+        for (String key : updatedContent.keySet()) {
+            String sql = "UPDATE artists SET (" + key + ") = (:" + key + ") WHERE id = :id";
+            try (Connection con = sql2o.open()) {
+                con.createQuery(sql)
+                        .addParameter(key, updatedContent.get(key))
+                        .addParameter("id", id)
+                        .executeUpdate();
+            } catch (Sql2oException ex) {
+                System.out.println(ex);
+            }
+        }
     }
 }

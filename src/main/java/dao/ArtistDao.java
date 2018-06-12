@@ -3,7 +3,9 @@ package dao;
 import models.Artist;
 import models.Genre;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ArtistDao {
 
@@ -17,6 +19,7 @@ public interface ArtistDao {
     List<Genre> getAllGenresByArtistId(int artistId);
 
     //UPDATE
+    void update(int id, HashMap<String, Object> updatedContent);
 
     //DELETE
     void deleteById(int id);
