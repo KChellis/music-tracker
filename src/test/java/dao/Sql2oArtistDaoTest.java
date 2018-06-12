@@ -38,10 +38,6 @@ public class Sql2oArtistDaoTest {
     }
 
     @Test
-    public void addGenreToArtist() {
-    }
-
-    @Test
     public void getAll() {
         Artist testArtist1 = setupArtist();
         Artist testArtist2 = setupAltArtist();

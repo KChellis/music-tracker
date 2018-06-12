@@ -47,7 +47,7 @@ public class Sql2oGenreDao implements GenreDao{
     @Override
     public void deleteById(int id) {
         String sql = "DELETE from genres WHERE id=:id";
-        String joinQuery = "DELETE from artists_genres WHERE genreId = :id";
+        String joinQuery = "DELETE from artists_genres WHERE genreId = :genreId";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
