@@ -9,6 +9,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -80,6 +81,16 @@ public class Sql2oGenreDaoTest {
         Artist[] artists = {testArtist, otherArtist};
 
         assertEquals(Arrays.asList(artists), genreDao.getAllArtistsByGenreId(testGenre.getId()));
+    }
+
+    @Test
+    public void updateGenre_correctlyUpdatesGenre() {
+        Genre testGenre = setupGenre();
+        HashMap<String, Object> testMap = new HashMap<>();
+        testMap.put("name", "rockabilly");
+        genreDao.update(1, testMap);
+        Genre updatedGenre = genreDao.findById(testGenre.getId());
+        assertEquals("rockabilly", updatedGenre.getName());
     }
 
     public Genre setupGenre(){

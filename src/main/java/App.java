@@ -99,7 +99,7 @@ public class App {
             }
         });
 
-        post("/artists/artistId/genres/genreId", "application/json", (req, res) -> {
+        post("/artists/:artistId/genres/:genreId", "application/json", (req, res) -> {
             int artistId = Integer.parseInt(req.params("artistId"));
             int genreId = Integer.parseInt(req.params("genreId"));
             Artist artist = artistDao.findById(artistId);
@@ -115,13 +115,19 @@ public class App {
         });
 
         post("/artists/:artistId/update", "application/json", (req, res) -> {
-            System.out.println("I'm here");
             HashMap<String, Object> updatedContent = gson.fromJson(req.body(), HashMap.class);
-            System.out.println("I'm there");
             int artistId = Integer.parseInt(req.params("artistId"));
             artistDao.update(artistId, updatedContent);
             res.status(201);
             return gson.toJson(artistDao.findById(artistId));
+        });
+
+        post("/genres/:genreId/update", "application/json", (req, res) -> {
+            HashMap<String, Object> updatedContent = gson.fromJson(req.body(), HashMap.class);
+            int genreId = Integer.parseInt(req.params("genreId"));
+            genreDao.update(genreId, updatedContent);
+            res.status(201);
+            return gson.toJson(genreDao.findById(genreId));
         });
 
         exception(ApiException.class, (exception, req, res) -> {
